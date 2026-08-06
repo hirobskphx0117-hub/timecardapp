@@ -1,36 +1,58 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# タイムカード
 
-## Getting Started
+複数スタッフ対応の勤怠打刻アプリ（Next.js / TypeScript / Tailwind CSS / libSQL）。
 
-First, run the development server:
+## 機能
+
+- スタッフはコードを入力して出勤・休憩入り・休憩終わり・退勤を打刻
+- 管理者はパスワードでログインし、スタッフの登録・有効/無効切り替え・削除ができる
+- 管理者は日付を選んで全スタッフの打刻記録・勤務時間・休憩時間を確認できる
+
+打刻データはデータベース（libSQL/Turso）に保存されるため、スタッフはそれぞれ自分のスマホ・PCから打刻できます。
+
+## セットアップ
+
+```bash
+npm install
+cp .env.example .env.local
+```
+
+`.env.local` に以下を設定してください。
+
+| 変数 | 説明 |
+| --- | --- |
+| `ADMIN_PASSWORD` | 管理画面のログインパスワード（必須） |
+| `SESSION_SECRET` | 管理者セッションCookie署名用のランダムな文字列（必須） |
+| `DATABASE_URL` | ローカル開発では未設定でOK（`./data/timecard.db` を自動使用）。本番では下記参照 |
+| `DATABASE_AUTH_TOKEN` | `DATABASE_URL` がリモート(Turso)の場合のみ必要 |
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+[http://localhost:3000](http://localhost:3000) を開いて確認できます。管理画面は `/admin` です。
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 本番データベース（Turso）の準備
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+各スタッフが別々の端末から打刻するため、ローカルファイルではなくネットワーク上のデータベースが必要です。無料で使える [Turso](https://turso.tech) の利用を想定しています。
 
-## Learn More
+1. [Turso](https://turso.tech) にサインアップ
+2. データベースを作成し、`Database URL`（`libsql://...`）と `Auth Token` を発行
+3. Vercelのプロジェクト設定 → Environment Variables に以下を追加
+   - `DATABASE_URL` = 発行された `libsql://...`
+   - `DATABASE_AUTH_TOKEN` = 発行されたトークン
+   - `ADMIN_PASSWORD` = 管理画面用パスワード
+   - `SESSION_SECRET` = ランダムな長い文字列
 
-To learn more about Next.js, take a look at the following resources:
+## ビルド
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+npm run build
+npm start
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Vercelへのデプロイ
 
-## Deploy on Vercel
+このリポジトリを Vercel にインポートし、上記の環境変数を設定してデプロイしてください。
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new)
