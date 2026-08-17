@@ -110,7 +110,7 @@ export default function PunchApp() {
       <div className="w-full max-w-sm">
         <header className="mb-8 text-center">
           <h1 className="text-3xl font-bold tracking-tight text-black/90 dark:text-white/90">
-            タイムカード
+            NEEDS株式会社タイムカード
           </h1>
           <p className="mt-1.5 text-sm text-black/45 dark:text-white/40">
             {formatJstFullDate(jstTodayKey())}
@@ -163,7 +163,7 @@ export default function PunchApp() {
     <div className="w-full max-w-md">
       <header className="mb-8 text-center">
         <h1 className="text-3xl font-bold tracking-tight text-black/90 dark:text-white/90">
-          タイムカード
+          NEEDS株式会社タイムカード
         </h1>
         <p className="mt-1.5 text-sm text-black/45 dark:text-white/40">
           {formatJstFullDate(jstTodayKey())}

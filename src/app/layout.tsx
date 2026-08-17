@@ -19,7 +19,7 @@ const notoSansJP = Noto_Sans_JP({
 });
 
 export const metadata: Metadata = {
-  title: "タイムカード",
+  title: "NEEDS株式会社タイムカード",
   description: "シンプルでおしゃれな勤怠打刻アプリ",
 };
 
